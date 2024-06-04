@@ -78,26 +78,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
 // Función para generar datos sintéticos
-function generateData(totalRows, columns) {
+function generateData(totalRows, columns, frequency) {
     const data = [];
-    for (let i = 0; i < totalRows; i++) {
-        const row = {};
+    let currentDate = new Date(); // Fecha inicial
+    for (let i = 1; i <= totalRows; i++) {
+        const row = { ID: i, Fecha: new Date(currentDate) }; // Agregar columna "ID" e "Fecha"
         columns.forEach(column => {
-            switch (column.dataType) {
-                case 'temperature':
-                case 'humidity':
-                    row[column.columnName] = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
-                    break;
-                case 'date':
-                    row[column.columnName] = generateDateValue(column.pattern, i);
-                    break;
+            if (column.columnName !== 'ID' && column.columnName !== 'Fecha') {
+                let columnName = column.columnName;
+                let value;
+                switch (column.dataType) {
+                    case 'temperature':
+                        columnName = 'Temperatura (°C)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case 'humidity':
+                        columnName = 'Humedad (%)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case 'date':
+                        value = new Date(currentDate); // Asignar fecha actual
+                        break;
+                }
+                row[columnName] = value;
             }
         });
         data.push(row);
+        // Incrementar la fecha según la frecuencia
+        switch (frequency) {
+            case 'hora':
+                currentDate.setHours(currentDate.getHours() + 1); // Incrementar una hora
+                break;
+            // Agregar otros casos según las frecuencias deseadas
+        }
     }
     return data;
 }
+
 
 function generateNumericValue(min, max, pattern, index) {
     min = parseFloat(min);
