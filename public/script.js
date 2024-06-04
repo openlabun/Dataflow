@@ -17,10 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <select name="dataType" required>
                 <option value="temperature">Temperatura (°C)</option>
                 <option value="humidity">Humedad (%)</option>
-                <option value="pressure">Presión (hPa)</option>
-                <option value="windSpeed">Velocidad del Viento (m/s)</option>
-                <option value="windDirection">Dirección del Viento (°)</option>
-                <option value="precipitation">Precipitación (mm)</option>
                 <option value="date">Fecha</option>
             </select>
             <br>
@@ -47,22 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
         columnConfig.querySelector('.removeColumnBtn').addEventListener('click', () => {
             columnsContainer.removeChild(columnConfig);
         });
-
-        columnConfig.querySelector('select[name="dataType"]').addEventListener('change', (event) => {
-            const numericConfig = columnConfig.querySelector('.numericConfig');
-            if (event.target.value === 'date') {
-                numericConfig.style.display = 'none';
-            } else {
-                numericConfig.style.display = 'block';
-            }
-        });
     });
 
+    // Generar dataset y mostrar en tabla
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        // Obtener valores del formulario
         const totalRows = document.getElementById('totalRows').value;
-        const frequency = document.getElementById('frequency').value;
         const columnConfigs = Array.from(columnsContainer.getElementsByClassName('columnConfig'));
         const columns = columnConfigs.map(columnConfig => ({
             columnName: columnConfig.querySelector('input[name="columnName"]').value,
@@ -72,65 +60,63 @@ document.addEventListener('DOMContentLoaded', () => {
             pattern: columnConfig.querySelector('select[name="variationPattern"]').value
         }));
 
-        const data = generateData(totalRows, columns, frequency);
+        // Generar y guardar datos sintéticos
+        const data = generateData(totalRows, columns);
         await saveDataToServer(data);
+
+        // Mostrar datos en tabla
         displayDataInTable(data, dataTable);
+
+        // Habilitar botón de exportación
         exportCsvBtn.disabled = false;
     });
 
+    // Exportar datos a CSV
     exportCsvBtn.addEventListener('click', () => {
         const data = getDataFromTable(dataTable);
         exportToCsv(data, 'dataset.csv');
     });
 });
 
+// Función para generar datos sintéticos
 function generateData(totalRows, columns, frequency) {
     const data = [];
     let currentDate = new Date(); // Fecha inicial
     for (let i = 1; i <= totalRows; i++) {
         const row = { ID: i, Fecha: new Date(currentDate) }; // Agregar columna "ID" e "Fecha"
-        let tempHumSet = false; // Bandera para verificar si ya se generaron los valores relacionados
-        let temperature, humidity;
-
         columns.forEach(column => {
-            let columnName = column.columnName;
-            let value;
-
-            if (column.dataType === 'temperature' || column.dataType === 'humidity') {
-                if (!tempHumSet) {
-                    const relatedValues = generateRelatedValues(
-                        column.minValue, column.maxValue, column.minValue, column.maxValue, column.pattern, i
-                    );
-                    temperature = relatedValues.temperature;
-                    humidity = relatedValues.humidity;
-                    tempHumSet = true;
+            if (column.columnName !== 'ID' && column.columnName !== 'Fecha') {
+                let columnName = column.columnName;
+                let value;
+                switch (column.dataType) {
+                    case 'temperature':
+                        columnName = 'Temperatura (°C)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case 'humidity':
+                        columnName = 'Humedad (%)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case 'date':
+                        value = new Date(currentDate); // Asignar fecha actual
+                        break;
                 }
-                value = (column.dataType === 'temperature') ? temperature : humidity;
-                columnName = (column.dataType === 'temperature') ? 'Temperatura (°C)' : 'Humedad (%)';
-            } else if (column.dataType === 'date') {
-                value = new Date(currentDate);
-            } else {
-                value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                row[columnName] = value;
             }
-
-            row[columnName] = value;
         });
-
         data.push(row);
-
+        // Incrementar la fecha según la frecuencia
         switch (frequency) {
             case 'hora':
                 currentDate.setHours(currentDate.getHours() + 1); // Incrementar una hora
                 break;
-            case 'dia':
-                currentDate.setDate(currentDate.getDate() + 1); // Incrementar un día
-                break;
             // Agregar otros casos según las frecuencias deseadas
         }
     }
-
     return data;
 }
+
+
 
 function generateNumericValue(min, max, pattern, index) {
     min = parseFloat(min);
@@ -147,14 +133,27 @@ function generateNumericValue(min, max, pattern, index) {
     }
 }
 
-function generateRelatedValues(minTemp, maxTemp, minHumidity, maxHumidity, pattern, index) {
-    const temperature = generateNumericValue(minTemp, maxTemp, pattern, index);
-    const humidity = maxHumidity - ((temperature - minTemp) / (maxTemp - minTemp)) * (maxHumidity - minHumidity);
-    return { temperature, humidity };
+function generateDateValue(pattern, index) {
+    const date = new Date();
+    switch (pattern) {
+        case 'constant':
+            return date.toISOString();
+        case 'linear':
+            date.setDate(date.getDate() + index);
+            return date.toISOString();
+        case 'sinusoidal':
+        case 'random':
+            date.setDate(date.getDate() + Math.random() * 10);
+            return date.toISOString();
+    }
 }
 
+// Función para mostrar datos en tabla
 function displayDataInTable(data, table) {
+    // Limpiar tabla existente
     table.innerHTML = '';
+
+    // Crear encabezado
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
     Object.keys(data[0]).forEach(key => {
@@ -163,6 +162,7 @@ function displayDataInTable(data, table) {
         headerRow.appendChild(th);
     });
 
+    // Crear filas de datos
     const tbody = table.createTBody();
     data.forEach(row => {
         const dataRow = tbody.insertRow();
@@ -173,6 +173,7 @@ function displayDataInTable(data, table) {
     });
 }
 
+// Función para obtener datos de la tabla
 function getDataFromTable(table) {
     const data = [];
     const rows = table.querySelectorAll('tbody tr');
@@ -187,6 +188,7 @@ function getDataFromTable(table) {
     return data;
 }
 
+// Función para exportar datos a CSV
 function exportToCsv(data, filename) {
     const csvRows = [];
     const headers = Object.keys(data[0]);
@@ -213,6 +215,7 @@ function replacer(key, value) {
     return value === null ? '' : value;
 }
 
+// Función para guardar datos en el servidor
 async function saveDataToServer(data) {
     for (const row of data) {
         await fetch('/api/sensors/data', {
