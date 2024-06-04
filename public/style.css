@@ -1,4 +1,4 @@
-
+/* Reset CSS */
 * {
     margin: 0;
     padding: 0;
@@ -18,9 +18,20 @@ body {
     padding: 20px;
 }
 
-h1, h2 {
-    margin-bottom: 20px;
+header {
     text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #007bff; /* Azul destacado */
+}
+
+header h2 {
+    font-size: 20px;
+    color: #555;
 }
 
 form {
