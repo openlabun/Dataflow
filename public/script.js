@@ -84,6 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
             editRow(row);
         }
     });
+
+    // Eliminar registro al hacer clic en el botón Eliminar
+    dataTable.addEventListener('click', (event) => {
+        if (event.target.classList.contains('remove-btn')) {
+            const row = event.target.closest('tr');
+            row.remove();
+        }
+    });
 });
 
 // Función para generar datos sintéticos
@@ -109,6 +117,7 @@ function generateData(totalRows, columns, frequency) {
                         value = new Date(currentDate); // Asignar fecha actual
                         break;
                 }
+                row[columnName] =
                 row[columnName] = value;
             }
         });
@@ -153,8 +162,7 @@ function saveRow(row) {
     cells.forEach(cell => {
         const input = cell.querySelector('input');
         const text = input.value;
-        cell.textContent =
-        text;
+        cell.textContent = text;
 
         // Restaurar el botón de editar
         const actionCell = row.querySelector('.action-cell');
