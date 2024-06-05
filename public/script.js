@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <select name="dataType" required>
                 <option value="temperature">Temperatura (°C)</option>
                 <option value="humidity">Humedad (%)</option>
-                <option value="date">Fecha</option>
+                <option value="pre">Presión (hPa)</option>
             </select>
             <br>
             <div class="numericConfig">
@@ -113,8 +113,21 @@ function generateData(totalRows, columns, frequency) {
                         columnName = 'Humedad (%)';
                         value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
                         break;
-                    case 'date':
-                        value = new Date(currentDate); // Asignar fecha actual
+                    case 'pre':
+                        columnName = 'Presión (hPa)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case  'voltage':
+                        columnName = 'Voltaje (V)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case 'current':
+                        columnName = 'Corriente (A)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
+                        break;
+                    case 'power':
+                        columnName = 'Potencia (W)';
+                        value = generateNumericValue(column.minValue, column.maxValue, column.pattern, i);
                         break;
                 }
                 row[columnName] =
@@ -229,6 +242,19 @@ function displayDataInTable(data, table) {
         actionCell.innerHTML = '<button class="edit-btn">Editar</button> <button class="remove-btn">Eliminar</button>';
     });
 }
+function exportToCsv(data, filename) {
+    const csvContent = "data:text/csv;charset=utf-8,"
+        + data.map(row => Object.values(row).join(',')).join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 
 // Función para obtener datos de la tabla
 function getDataFromTable(table) {
@@ -237,40 +263,17 @@ function getDataFromTable(table) {
     rows.forEach(row => {
         const rowData = {};
         const cells = row.querySelectorAll('td');
+        const headers = Array.from(table.querySelectorAll('th'));
         cells.forEach((cell, index) => {
-            rowData[table.querySelectorAll('th')[index].textContent] = cell.textContent;
+            if (headers[index]) {
+                rowData[headers[index].textContent] = cell.textContent;
+            }
         });
         data.push(rowData);
     });
     return data;
 }
 
-// Función para exportar datos a CSV
-function exportToCsv(data, filename) {
-    const csvRows = [];
-    const headers = Object.keys(data[0]);
-    csvRows.push(headers.join(','));
-
-    data.forEach(row => {
-        const values = headers.map(header => JSON.stringify(row[header], replacer));
-        csvRows.push(values.join(','));
-    });
-
-    const csvString = csvRows.join('\n');
-    const blob = new Blob([csvString], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute('download', filename);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
-function replacer(key, value) {
-    return value === null ? '' : value;
-}
 
 // Función para guardar datos en el servidor
 async function saveDataToServer(data) {
