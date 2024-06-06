@@ -1,67 +1,161 @@
 /* Reset CSS */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
+/* General styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
+    font-family: 'Roboto', sans-serif;
+}
+
+section {
+    padding: 60px 20px; /* Adjust padding for each section */
+}
+
+
+
+/* Navigation styles */
+nav {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 1em 2em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    font-family: 'Figtree', sans-serif;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #408744;
+
+}
+
+/* Home section styles */
+#home {
+    background-color: black;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    height: 100vh;
+    display: flex;
+    font-family: 'Figtree', sans-serif;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
 }
 
-header {
-    text-align: center;
+
+.main-title {
+    position: relative;
+    z-index: 2;
     margin-bottom: 20px;
+    font-size: 3em;
 }
 
-header h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
-    color: #007bff; /* Azul destacado */
+.dataflow-text {
+    color: #2b502d; /* Cambia el color de "DataFlow" a tu preferencia */
 }
 
-header h2 {
-    font-size: 20px;
-    color: #555;
+.sub-title{
+    font-size: 1em;
+}
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-form {
+/* Config section styles */
+#configSection {
+    background: white;
+    padding: 40px 20px;
+}
+
+
+
+#configSection h2 {
+    padding: 20px ;
+    top: 20px;
+    left: 20px;
+    margin: 0;
+    font-size: 2em;
+    color: #333;
+}
+
+#dataConfigForm {
+    display: flex;
+    flex-wrap: wrap;
     background: #fff;
-    padding: 20px;
+    padding: 45px;
+    font-family: 'Figtree', sans-serif;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+    display: flex;
     width: 100%;
-    max-width: 600px;
+}
+
+.config-global, .config-columns {
+    flex: 1;
+    padding: 15px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-weight: bold;
+    font-size: medium;
+    font-family: 'Figtree', sans-serif;
 }
 
 input[type="number"], input[type="text"], select {
-    width: 100%;
+    width: 70%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #cbe7cc;
     border-radius: 5px;
 }
 
 button {
-    display: inline-block;
-    background: #007bff;
+    
+    background: #2b502d;
     color: #fff;
     border: none;
+    font-family: 'Figtree', sans-serif;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
@@ -69,11 +163,12 @@ button {
 }
 
 button:hover {
-    background: #0056b3;
+    background: #408744;
 }
 
 button[type="button"] {
     background: #dc3545;
+    float: left;
 }
 
 button[type="button"]:hover {
@@ -81,8 +176,10 @@ button[type="button"]:hover {
 }
 
 button#addColumnBtn {
+    position: flex;
     background: #28a745;
-    margin-bottom: 20px;
+    float: right;
+
 }
 
 button#addColumnBtn:hover {
@@ -90,30 +187,40 @@ button#addColumnBtn:hover {
 }
 
 button#exportCsvBtn {
-    background: #ffc107;
+    background: #3b7e3e;
 }
 
 button#exportCsvBtn:hover {
-    background: #e0a800;
+
+    background: #71b774;
 }
 
 .columnConfig {
-    background: #f8f9fa;
-    padding: 10px;
-    border: 1px solid #ddd;
+    background: white;
+    padding: 20px;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
+    width: 1;
 }
 
-#dataTable {
+.config-columns{
+    border:#333
+}
+
+#dataSection #dataTable {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
+    font-family: 'Figtree', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 80px;
 }
 
-#dataTable th, #dataTable td {
+#dataSection #dataTable th,
+#dataSection #dataTable td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
+    border-radius: 80px;
 }
 
 .action-cell {
@@ -149,3 +256,10 @@ button#exportCsvBtn:hover {
     border-radius: 5px;
 }
 
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
