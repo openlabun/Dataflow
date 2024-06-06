@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { SensorData } = require('../models');
+
 
 const app = express();
 
@@ -12,7 +12,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// Endpoints para la API REST
+// Endpoints para la API REST (NO IMPLEMENTADO)
+
 app.get('/api/sensors/data', async (req, res) => {
     try {
         const data = await SensorData.findAll();

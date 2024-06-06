@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <option value="temperature">Temperatura (°C)</option>
                 <option value="humidity">Humedad (%)</option>
                 <option value="pre">Presión (hPa)</option>
+                <option value="power">Potencia (W)</option>
+                <option value="current">Corriente (A)</option>
+                <option value="voltage">Voltaje (V)</option>
             </select>
             <br>
             <div class="numericConfig">
