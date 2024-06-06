@@ -64,10 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = generateData(totalRows, columns);
         await saveDataToServer(data);
 
-        // Mostrar datos en tabla
         displayDataInTable(data, dataTable);
-
-        // Habilitar botón de exportación
         exportCsvBtn.disabled = false;
     });
 
@@ -77,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
         exportToCsv(data, 'dataset.csv');
     });
 
-    // Editar registro al hacer clic en el botón Editar
     dataTable.addEventListener('click', (event) => {
         if (event.target.classList.contains('edit-btn')) {
             const row = event.target.closest('tr');
@@ -85,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Eliminar registro al hacer clic en el botón Eliminar
     dataTable.addEventListener('click', (event) => {
         if (event.target.classList.contains('remove-btn')) {
             const row = event.target.closest('tr');
@@ -94,12 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Función para generar datos sintéticos
+
 function generateData(totalRows, columns, frequency) {
     const data = [];
-    let currentDate = new Date(); // Fecha inicial
+    let currentDate = new Date(); 
     for (let i = 1; i <= totalRows; i++) {
-        const row = { ID: i, Fecha: new Date(currentDate) }; // Agregar columna "ID" e "Fecha"
+        const row = { ID: i, Fecha: new Date(currentDate) }; 
         columns.forEach(column => {
             if (column.columnName !== 'ID' && column.columnName !== 'Fecha') {
                 let columnName = column.columnName;
@@ -135,18 +130,15 @@ function generateData(totalRows, columns, frequency) {
             }
         });
         data.push(row);
-        // Incrementar la fecha según la frecuencia
         switch (frequency) {
             case 'hora':
-                currentDate.setHours(currentDate.getHours() + 1); // Incrementar una hora
+                currentDate.setHours(currentDate.getHours() + 1);
                 break;
-            // Agregar otros casos según las frecuencias deseadas
         }
     }
     return data;
 }
 
-// Función para editar un registro
 function editRow(row) {
     const cells = Array.from(row.querySelectorAll('td'));
     cells.forEach(cell => {
@@ -176,12 +168,9 @@ function saveRow(row) {
         const input = cell.querySelector('input');
         const text = input.value;
         cell.textContent = text;
-
-        // Restaurar el botón de editar
         const actionCell = row.querySelector('.action-cell');
         actionCell.innerHTML = '<button class="edit-btn">Editar</button> <button class="remove-btn">Eliminar</button>';
 
-        // Realizar acciones adicionales de guardar, como enviar los datos al servidor si es necesario
     });
 }
 
@@ -217,10 +206,8 @@ function generateDateValue(pattern, index) {
 
 // Función para mostrar datos en tabla
 function displayDataInTable(data, table) {
-    // Limpiar tabla existente
     table.innerHTML = '';
 
-    // Crear encabezado
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
     Object.keys(data[0]).forEach(key => {
@@ -229,7 +216,7 @@ function displayDataInTable(data, table) {
         headerRow.appendChild(th);
     });
 
-    // Crear filas de datos
+    
     const tbody = table.createTBody();
     data.forEach(rowData => {
         const dataRow = tbody.insertRow();
@@ -256,7 +243,6 @@ function exportToCsv(data, filename) {
 }
 
 
-// Función para obtener datos de la tabla
 function getDataFromTable(table) {
     const data = [];
     const rows = table.querySelectorAll('tbody tr');
