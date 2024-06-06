@@ -5,16 +5,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+
 }
-/* General styles */
-body {
-    font-family: 'Roboto', sans-serif;
-}
+
 
 section {
     padding: 60px 20px; /* Adjust padding for each section */
 }
-
 
 
 /* Navigation styles */
@@ -36,7 +34,7 @@ nav {
 nav header h1 {
     margin: 0;
     font-size: 1.5em;
-    font-family: 'Figtree', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 nav ul {
@@ -44,6 +42,7 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
+    
 }
 
 nav ul li {
@@ -64,13 +63,16 @@ nav ul li a:hover {
 
 /* Home section styles */
 #home {
+    position: relative;
+  background: url('assets/Fondoo.png') center/cover no-repeat;
+  overflow: hidden;
+  z-index: 1;
     background-color: black;
     position: relative;
-    overflow: hidden;
+    
     color: white;
     height: 100vh;
     display: flex;
-    font-family: 'Figtree', sans-serif;
     align-items: center;
     justify-content: center;
 }
@@ -84,7 +86,7 @@ nav ul li a:hover {
 }
 
 .dataflow-text {
-    color: #2b502d; /* Cambia el color de "DataFlow" a tu preferencia */
+    color: #2b502d; 
 }
 
 .sub-title{
@@ -119,7 +121,6 @@ nav ul li a:hover {
     flex-wrap: wrap;
     background: #fff;
     padding: 45px;
-    font-family: 'Figtree', sans-serif;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -131,7 +132,11 @@ nav ul li a:hover {
 
 .config-global, .config-columns {
     flex: 1;
-    padding: 15px;
+    padding: 8px;
+}
+
+.columnsContainer{
+    height: 20;
 }
 
 label {
@@ -139,7 +144,7 @@ label {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: medium;
-    font-family: 'Figtree', sans-serif;
+  
 }
 
 input[type="number"], input[type="text"], select {
@@ -155,7 +160,7 @@ button {
     background: #2b502d;
     color: #fff;
     border: none;
-    font-family: 'Figtree', sans-serif;
+   
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
@@ -200,18 +205,16 @@ button#exportCsvBtn:hover {
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 7px;
-    width: 1;
+    width: 2;
+    border: 1px solid #cbe7cc;
 }
 
-.config-columns{
-    border:#333
-}
 
 #dataSection #dataTable {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
-    font-family: 'Figtree', sans-serif;
+  
     border: 1px solid #ccc;
     border-radius: 80px;
 }
