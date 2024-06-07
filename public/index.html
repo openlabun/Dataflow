@@ -119,5 +119,185 @@
       </div>
     </section>
     <script src="script.js"></script>
+    <!-- Graficador-->
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Gráfico con Chart.js</title>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"></script>
+      <style>
+          .chart-container {
+              width: 80%;
+              margin: auto;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="chart-container">
+          <canvas id="myChart"></canvas>
+      </div>
+  
+      <input type="file" id="csvFileInput" accept=".csv">
+      <button id="loadDataButton">Cargar datos</button>
+  
+      <table id="data-table">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Tipo de dato</th>
+                  <th>Valor</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              const ctx = document.getElementById('myChart').getContext('2d');
+              let myChart;
+  
+              const data = {
+                  labels: [],
+                  datasets: []
+              };
+  
+              const colors = [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 99, 132, 0.4)',
+                  'rgba(54, 162, 235, 0.4)'
+              ];
+  
+              function updateChart() {
+                  if (myChart) {
+                      myChart.destroy(); // Destruir el gráfico actual para crear uno nuevo
+                  }
+  
+                  myChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: data,
+                      options: {
+                          plugins: {
+                              zoom: {
+                                  zoom: {
+                                      wheel: {
+                                          enabled: true,
+                                      },
+                                      pinch: {
+                                          enabled: true
+                                      },
+                                      mode: 'xy',
+                                      onZoom: function({chart}) {
+                                          const yScale = chart.scales.y;
+                                          if (yScale.min < 0) {
+                                              chart.options.scales.y.min = 0;
+                                              chart.update();
+                                          }
+                                      }
+                                  }
+                              }
+                          },
+                          scales: {
+                              y: {
+                                  beginAtZero: true
+                              }
+                          }
+                      }
+                  });
+              }
+  
+              function parseCSV(text) {
+                  const lines = text.split('\n');
+                  const headers = lines[0].split(',').map(header => header.trim());
+                  const rows = lines.slice(1);
+  
+                  return rows.map(row => {
+                      const values = row.split(',').map(value => value.trim().replace(/(^"|"$)/g, ''));
+                      return headers.reduce((obj, header, index) => {
+                          obj[header] = values[index];
+                          return obj;
+                      }, {});
+                  });
+              }
+  
+              function handleCSVData(csvData) {
+                  const dataTypes = [
+                      'Temperatura (°C)', 
+                      'Humedad (%)', 
+                      'Presión (hPa)', 
+                      'Potencia (W)', 
+                      'Corriente (A)', 
+                      'Voltaje (V)'
+                  ];
+                  
+                  data.labels = csvData.map(row => row['ID']);
+                  data.datasets = [];
+  
+                  dataTypes.forEach((type, index) => {
+                      const dataset = {
+                          label: type,
+                          backgroundColor: colors[index % colors.length],
+                          borderColor: colors[index % colors.length].replace('0.2', '1'),
+                          borderWidth: 1,
+                          data: csvData.map(row => row[type])
+                      };
+  
+                      data.datasets.push(dataset);
+                  });
+  
+                  updateChart();
+  
+                  const tableBody = document.querySelector('#data-table tbody');
+                  tableBody.innerHTML = '';
+                  csvData.forEach(row => {
+                      const newRow = document.createElement('tr');
+                      const idCell = document.createElement('td');
+                      idCell.textContent = row['ID'];
+                      newRow.appendChild(idCell);
+  
+                      const dateCell = document.createElement('td');
+                      dateCell.textContent = row['Fecha'];
+                      newRow.appendChild(dateCell);
+  
+                      dataTypes.forEach(type => {
+                          const typeCell = document.createElement('td');
+                          typeCell.textContent = type;
+                          newRow.appendChild(typeCell);
+  
+                          const valueCell = document.createElement('td');
+                          valueCell.textContent = row[type];
+                          newRow.appendChild(valueCell);
+                      });
+  
+                      tableBody.appendChild(newRow);
+                  });
+              }
+  
+              document.getElementById('loadDataButton').addEventListener('click', function() {
+                  const fileInput = document.getElementById('csvFileInput');
+                  const file = fileInput.files[0];
+  
+                  if (file) {
+                      const reader = new FileReader();
+                      reader.onload = function(e) {
+                          const csvText = e.target.result;
+                          const csvData = parseCSV(csvText);
+                          handleCSVData(csvData);
+                      };
+                      reader.readAsText(file);
+                  } else {
+                      alert('Por favor, selecciona un archivo CSV.');
+                  }
+              });
+          });
+      </script>
+  </body>
   </body>
 </html>
