@@ -162,7 +162,7 @@ function generateData(totalRows, columns, frequency) {
             );
             break;
         }
-        row[columnName] = row[columnName] = value;
+        row[columnName] = value;
       }
     });
     data.push(row);
@@ -265,11 +265,20 @@ function displayDataInTable(data, table) {
       '<button class="edit-btn">Editar</button> <button class="remove-btn">Eliminar</button>';
   });
 }
+
 function exportToCsv(data, filename) {
+  if (data.length === 0) return;
+
+  // Obtener los nombres de las columnas
+  const columnNames = Object.keys(data[0]);
+  
+  // Crear el contenido del CSV
   const csvContent =
     "data:text/csv;charset=utf-8," +
-    data.map((row) => Object.values(row).join(",")).join("\n");
+    columnNames.join(",") + "\n" + // Añadir los nombres de las columnas
+    data.map((row) => columnNames.map(column => row[column]).join(",")).join("\n");
 
+  // Crear un enlace para descargar el CSV
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
