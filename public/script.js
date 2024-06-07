@@ -177,37 +177,46 @@ function generateData(totalRows, columns, frequency) {
 
 function editRow(row) {
   const cells = Array.from(row.querySelectorAll("td"));
-  cells.forEach((cell) => {
-    const oldValue = cell.textContent;
-    const input = document.createElement("input");
-    input.type = "text";
-    input.value = oldValue;
-    cell.textContent = "";
-    cell.appendChild(input);
+  cells.forEach((cell, index) => {
+    // Ignorar las primeras dos columnas (ID y Fecha)
+    if (index > 1) {
+      const oldValue = cell.textContent;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = oldValue;
+      cell.textContent = "";
+      cell.appendChild(input);
+    }
   });
 
   const actionCell = row.querySelector(".action-cell");
   actionCell.innerHTML = '<button class="save-btn">Guardar</button>';
-}
 
-// Función para guardar los cambios después de editar
-dataTable.addEventListener("click", (event) => {
-  if (event.target.classList.contains("save-btn")) {
-    const row = event.target.closest("tr");
-    saveRow(row);
-  }
-});
+  const saveBtn = actionCell.querySelector(".save-btn");
+  saveBtn.addEventListener("click", () => saveRow(row));
+}
 
 function saveRow(row) {
   const cells = Array.from(row.querySelectorAll("td"));
-  cells.forEach((cell) => {
-    const input = cell.querySelector("input");
-    const text = input.value;
-    cell.textContent = text;
-    const actionCell = row.querySelector(".action-cell");
-    actionCell.innerHTML =
-      '<button class="edit-btn">Editar</button> <button class="remove-btn">Eliminar</button>';
+  cells.forEach((cell, index) => {
+    // Ignorar las primeras dos columnas (ID y Fecha)
+    if (index > 1) {
+      const input = cell.querySelector("input");
+      if (input) {
+        const text = input.value;
+        cell.textContent = text;
+      }
+    }
   });
+
+  const actionCell = row.querySelector(".action-cell");
+  actionCell.innerHTML = '<button class="edit-btn">Editar</button> <button class="remove-btn">Eliminar</button>';
+
+  const editBtn = actionCell.querySelector(".edit-btn");
+  const removeBtn = actionCell.querySelector(".remove-btn");
+
+  editBtn.addEventListener("click", () => editRow(row));
+  removeBtn.addEventListener("click", () => row.remove());
 }
 
 function generateNumericValue(min, max, pattern, index) {
