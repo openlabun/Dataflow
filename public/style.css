@@ -6,14 +6,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Lato', sans-serif;
-
 }
-
 
 section {
     padding: 60px 20px; /* Adjust padding for each section */
 }
-
 
 /* Navigation styles */
 nav {
@@ -42,7 +39,6 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    
 }
 
 nav ul li {
@@ -58,25 +54,22 @@ nav ul li a {
 
 nav ul li a:hover {
     color: #408744;
-
 }
 
 /* Home section styles */
 #home {
     position: relative;
-  background: url('assets/Fondoo.png') center/cover no-repeat;
-  overflow: hidden;
-  z-index: 1;
+    background: url('assets/Fondoo.png') center/cover no-repeat;
+    overflow: hidden;
+    z-index: 1;
     background-color: black;
     position: relative;
-    
     color: white;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 
 .main-title {
     position: relative;
@@ -92,6 +85,7 @@ nav ul li a:hover {
 .sub-title{
     font-size: 1.6em;
 }
+
 .content {
     position: absolute;
     top: 50%;
@@ -105,10 +99,8 @@ nav ul li a:hover {
     padding: 40px 20px;
 }
 
-
-
 #configSection h2 {
-    padding: 20px ;
+    padding: 20px;
     top: 20px;
     left: 20px;
     margin: 0;
@@ -135,7 +127,7 @@ nav ul li a:hover {
     padding: 8px;
 }
 
-.columnsContainer{
+.columnsContainer {
     height: 20;
 }
 
@@ -144,7 +136,6 @@ label {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: medium;
-  
 }
 
 input[type="number"], input[type="text"], select {
@@ -156,11 +147,9 @@ input[type="number"], input[type="text"], select {
 }
 
 button {
-    
     background: #2b502d;
     color: #fff;
     border: none;
-   
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
@@ -184,7 +173,6 @@ button#addColumnBtn {
     position: flex;
     background: #28a745;
     float: right;
-
 }
 
 button#addColumnBtn:hover {
@@ -196,7 +184,6 @@ button#exportCsvBtn {
 }
 
 button#exportCsvBtn:hover {
-
     background: #71b774;
 }
 
@@ -209,12 +196,10 @@ button#exportCsvBtn:hover {
     border: 1px solid #cbe7cc;
 }
 
-
 #dataSection #dataTable {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
-  
     border: 1px solid #ccc;
     border-radius: 80px;
 }
@@ -265,4 +250,32 @@ button#exportCsvBtn:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 40px;
     margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+/* Styles for file input and load button */
+#csvFileInput {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #cbe7cc;
+    border-radius: 5px;
+    width: 50%;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button#loadDataButton {
+    display: block;
+    margin: 20px auto;
+    background: #17a2b8;
+}
+
+button#loadDataButton:hover {
+    background: #138496;
+}
+
+/* Chart container styles */
+.chart-container {
+    width: 80%;
+    margin: auto;
 }

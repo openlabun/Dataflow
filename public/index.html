@@ -141,19 +141,6 @@
       <input type="file" id="csvFileInput" accept=".csv">
       <button id="loadDataButton">Cargar datos</button>
   
-      <table id="data-table">
-          <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>Fecha</th>
-                  <th>Tipo de dato</th>
-                  <th>Valor</th>
-              </tr>
-          </thead>
-          <tbody>
-          </tbody>
-      </table>
-  
       <script>
           document.addEventListener('DOMContentLoaded', function() {
               const ctx = document.getElementById('myChart').getContext('2d');
@@ -254,30 +241,7 @@
   
                   updateChart();
   
-                  const tableBody = document.querySelector('#data-table tbody');
-                  tableBody.innerHTML = '';
-                  csvData.forEach(row => {
-                      const newRow = document.createElement('tr');
-                      const idCell = document.createElement('td');
-                      idCell.textContent = row['ID'];
-                      newRow.appendChild(idCell);
-  
-                      const dateCell = document.createElement('td');
-                      dateCell.textContent = row['Fecha'];
-                      newRow.appendChild(dateCell);
-  
-                      dataTypes.forEach(type => {
-                          const typeCell = document.createElement('td');
-                          typeCell.textContent = type;
-                          newRow.appendChild(typeCell);
-  
-                          const valueCell = document.createElement('td');
-                          valueCell.textContent = row[type];
-                          newRow.appendChild(valueCell);
-                      });
-  
-                      tableBody.appendChild(newRow);
-                  });
+                  // Aquí se elimina la generación de la tabla
               }
   
               document.getElementById('loadDataButton').addEventListener('click', function() {
