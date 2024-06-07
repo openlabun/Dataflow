@@ -147,7 +147,7 @@ input[type="number"], input[type="text"], select {
 }
 
 button {
-    background: #2b502d;
+    background: #138496;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -157,7 +157,7 @@ button {
 }
 
 button:hover {
-    background: #408744;
+    background: #138496;
 }
 
 button[type="button"] {
@@ -180,7 +180,7 @@ button#addColumnBtn:hover {
 }
 
 button#exportCsvBtn {
-    background: #3b7e3e;
+    background: #28a745;
 }
 
 button#exportCsvBtn:hover {
@@ -278,4 +278,37 @@ button#loadDataButton:hover {
 .chart-container {
     width: 80%;
     margin: auto;
+}
+
+button.edit-btn {
+    background-color: #28a745; /* verde */
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+button.save-btn {
+    background-color: #28a745; /* verde */
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+button.edit-btn:hover {
+    background-color: #218838; /* verde más oscuro */
+}
+
+button.remove-btn {
+    background-color: #dc3545; /* rojo */
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button.remove-btn:hover {
+    background-color: #c82333; /* rojo más oscuro */
 }
