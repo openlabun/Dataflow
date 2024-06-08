@@ -19,7 +19,7 @@ En un contexto educativo, DataFlow es una herramienta valiosa para enseñar y de
 ## Propuesta de nuevas funcionalidades
 
 1. **Integración con API Externas para Datos Reales:** Agregar la capacidad de integrar datos reales de sensores mediante APIs externas, permitiendo la combinación de datos sintéticos y reales para enriquecer los datasets.
-2. **Visualización:** Incorporar gráficos interactivos para visualizar los datos generados, facilitando el análisis y la interpretación de los datos.
+2. **Correlación:** Incorporar opciones para correlacionar varias varaibles, ya sea directa o inversamente. De esa manera, los datos cobrarán aún más sentido.
 
 ## Ejecución
 
