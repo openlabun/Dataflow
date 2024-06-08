@@ -3,23 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <title>Generador de Datos Sintéticos - DataFlow</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
     <style>
-        .chart-container, .pairplot-container {
-            width: 80%;
-            margin: auto;
-        }
+      .chart-container, .pairplot-container {
+        width: 80%;
+        margin: auto;
+      }
     </style>
   </head>
   <body>
-    <!-- Sección 1: Barra de navegación -->
     <nav>
       <header>
         <h1>DataFlow</h1>
@@ -33,41 +30,28 @@
 
     <section id="home">
       <div class="content">
-        <h1 class="main-title">
-          Bienvenido a <span class="dataflow-text">DataFlow</span>
-        </h1>
-        <h2 class="sub-title">
-          ¿Necesitas datos personalizados de sensores? DataFlow te ofrece una
-          forma rápida y fácil de generar datasets de temperatura, humedad,
-          presión, y más. ¡Elige tu patrón de variación y obtén los datos que necesitas al
-          instante!
-        </h2>
+        <h1 class="main-title">Bienvenido a <span class="dataflow-text">DataFlow</span></h1>
+        <h2 class="sub-title">¿Necesitas datos personalizados de sensores? DataFlow te ofrece una forma rápida y fácil de generar datasets de temperatura, humedad, presión, y más. ¡Elige tu patrón de variación y obtén los datos que necesitas al instante!</h2>
       </div>
     </section>
 
-    <!-- Sección 2: Formulario de configuración -->
     <section id="configSection">
       <form id="dataConfigForm">
         <h2>Construye tu Dataset</h2>
         <div class="form-section">
           <div class="config-global">
             <label for="totalRows">Total de filas:</label>
-            <input
-              type="number"
-              id="totalRows"
-              name="totalRows"
-              min="1"
-              required
-            />
+            <input type="number" id="totalRows" name="totalRows" min="1" required />
             <br />
-            <label for="dataFrequency"
-              >Frecuencia de generación de datos:</label
-            >
+            <label for="dataFrequency">Frecuencia de generación de datos:</label>
             <select id="dataFrequency" name="dataFrequency" required>
               <option value="seconds">Segundos</option>
               <option value="minutes">Minutos</option>
               <option value="hours">Horas</option>
             </select>
+            <br />
+            <label for="startDate">Fecha de inicio:</label>
+            <input type="date" id="startDate" name="startDate" required />
           </div>
           <div class="config-columns">
             <h3>Configuración de Columnas</h3>
@@ -81,7 +65,7 @@
                 <select name="dataType" required>
                   <option value="temperature">Temperatura (°C)</option>
                   <option value="humidity">Humedad (%)</option>
-                  <option value="pre">Presión (hPa)</option>
+                  <option value="pressure">Presión (hPa)</option>
                   <option value="power">Potencia (W)</option>
                   <option value="current">Corriente (A)</option>
                   <option value="voltage">Voltaje (V)</option>
@@ -103,224 +87,36 @@
                   <option value="random">Aleatorio</option>
                 </select>
                 <br />
-                <button type="button" class="removeColumnBtn">
-                  Eliminar Columna
-                </button>
+                <button type="button" class="removeColumnBtn">Eliminar Columna</button>
               </div>
-              
             </div>
             <button type="button" id="addColumnBtn">Agregar Columna</button>
           </div>
         </div>
-        <button type="#exportCsvBtn">Generar Dataset</button>
+        <button type="submit">Generar Dataset</button>
       </form>
     </section>
 
-    <!-- Sección 3: Datos generados -->
     <section id="dataSection">
       <h2>Datos Generados</h2>
       <div class="card">
         <table id="dataTable">
           <!-- La tabla se llenará con los datos generados -->
         </table>
-        <div id="paginationControls" class="pagination-controls"></div>
-        <button id="exportCsvBtn">Exportar a CSV</button>
+        <button id="exportCsvBtn" disabled>Exportar a CSV</button>
       </div>
     </section>
+
     <div class="chart-container">
-        <canvas id="myChart"></canvas>
+      <canvas id="myChart"></canvas>
     </div>
     <div class="pairplot-container">
-        <div id="pairPlot"></div>
+      <div id="pairPlot"></div>
     </div>
+
     <input type="file" id="csvFileInput" accept=".csv">
     <button id="loadDataButton">Cargar datos</button>
+
     <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            let myChart;
-
-            const data = {
-                labels: [],
-                datasets: []
-            };
-
-            const colors = [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 99, 132, 0.4)',
-                'rgba(54, 162, 235, 0.4)'
-            ];
-
-            function updateChart() {
-                if (myChart) {
-                    myChart.destroy(); // Destruir el gráfico actual para crear uno nuevo
-                }
-
-                myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        plugins: {
-                            zoom: {
-                                zoom: {
-                                    wheel: {
-                                        enabled: true,
-                                    },
-                                    pinch: {
-                                        enabled: true
-                                    },
-                                    mode: 'xy',
-                                    onZoom: function({chart}) {
-                                        const yScale = chart.scales.y;
-                                        if (yScale.min < 0) {
-                                            chart.options.scales.y.min = 0;
-                                            chart.update();
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }
-
-            function parseCSV(text) {
-                const lines = text.split('\n');
-                const headers = lines[0].split(',').map(header => header.trim());
-                const rows = lines.slice(1);
-
-                return rows.map(row => {
-                    const values = row.split(',').map(value => value.trim().replace(/(^"|"$)/g, ''));
-                    return headers.reduce((obj, header, index) => {
-                        obj[header] = values[index];
-                        return obj;
-                    }, {});
-                });
-            }
-
-            function createPairPlot(data) {
-                const headers = Object.keys(data[0]).filter(header => header !== 'ID' && header !== 'Fecha');
-                const colors = [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ];
-
-                const dimensions = headers.map((header, index) => ({
-                    label: header,
-                    values: data.map(row => parseFloat(row[header])),
-                    axisColor: colors[index % colors.length],
-                    axisTickColor: colors[index % colors.length]
-                }));
-
-                const trace = {
-                    type: 'splom',
-                    dimensions: dimensions,
-                    marker: {
-                        color: colors.map((color, index) => colors[index % colors.length]),
-                        size: 5,
-                        line: {
-                            color: 'white',
-                            width: 0.5
-                        }
-                    }
-                };
-
-                const layout = {
-                    title: 'Pair Plot',
-                    height: 800,
-                    width: 800,
-                    autosize: true
-                };
-
-                Plotly.newPlot('pairPlot', [trace], layout);
-            }
-
-            function handleCSVData(csvData) {
-                const dataTypes = [
-                    'Temperatura (°C)', 
-                    'Humedad (%)', 
-                    'Presión (hPa)', 
-                    'Potencia (W)', 
-                    'Corriente (A)', 
-                    'Voltaje (V)'
-                ];
-                
-                data.labels = csvData.map(row => row['ID']);
-                data.datasets = [];
-
-                dataTypes.forEach((type, index) => {
-                    const dataset = {
-                        label: type,
-                        backgroundColor: colors[index % colors.length],
-                        borderColor: colors[index % colors.length].replace('0.2', '1'),
-                        borderWidth: 1,
-                        data: csvData.map(row => row[type])
-                    };
-
-                    data.datasets.push(dataset);
-                });
-
-                updateChart();
-                createPairPlot(csvData);
-
-                // const tableBody = document.querySelector('#data-table tbody');
-                // tableBody.innerHTML = '';
-                // csvData.forEach(row => {
-                //     const newRow = document.createElement('tr');
-                //     const idCell = document.createElement('td');
-                //     idCell.textContent = row['ID'];
-                //     newRow.appendChild(idCell);
-
-                //     const dateCell = document.createElement('td');
-                //     dateCell.textContent = row['Fecha'];
-                //     newRow.appendChild(dateCell);
-
-                //     dataTypes.forEach(type => {
-                //         const typeCell = document.createElement('td');
-                //         typeCell.textContent = type;
-                //         newRow.appendChild(typeCell);
-
-                //         const valueCell = document.createElement('td');
-                //         valueCell.textContent = row[type];
-                //         newRow.appendChild(valueCell);
-                //     });
-
-                //     tableBody.appendChild(newRow);
-                // });
-            }
-
-            document.getElementById('loadDataButton').addEventListener('click', function() {
-                const fileInput = document.getElementById('csvFileInput');
-                const file = fileInput.files[0];
-
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const csvText = e.target.result;
-                        const csvData = parseCSV(csvText);
-                        handleCSVData(csvData);
-                    };
-                    reader.readAsText(file);
-                } else {
-                    alert('Por favor, selecciona un archivo CSV.');
-                }
-            });
-        });
-    </script>
   </body>
 </html>

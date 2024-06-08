@@ -312,3 +312,13 @@ button.remove-btn {
 button.remove-btn:hover {
     background-color: #c82333; /* rojo más oscuro */
 }
+.columnConfig {
+    position: relative;
+  }
+  
+  .removeColumnBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
