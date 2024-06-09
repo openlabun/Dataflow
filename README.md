@@ -29,7 +29,9 @@ En un contexto educativo, DataFlow es una herramienta valiosa para enseñar y de
 4. Ejecuta `node server.js`.
 5. El proyecto se ejecutará en el puerto 3000.
 
+Video de prueba: https://drive.google.com/file/d/1DVNsqbiaO0b4pcQYphhQwULf8BD3227q/view?usp=sharing 
+
 ## Miembros del equipo
 
-- Yuli Meza NRC 2381
-- Daniel Mendoza NRC 2381
+- Yuli Meza (Github: yulimezab) NRC 2381
+- Daniel Mendoza (Github: DEM2) NRC 2381
