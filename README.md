@@ -25,9 +25,29 @@ En un contexto educativo, DataFlow es una herramienta valiosa para enseñar y de
 
 1. Abre tu CMD.
 2. Navega hasta el directorio del proyecto.
-3. Ve a la carpeta `server`.
-4. Ejecuta `node server.js`.
-5. El proyecto se ejecutará en el puerto 3000.
+3. Ejecuta 
+```
+node server.js
+```
+4. El proyecto se ejecutará en el puerto 3000 `http://localhost:3000`.
+
+## Ejecución con Docker
+Asegúrate de tener Docker instalado y ejecutando en tu sistema.
+
+```
+docker-compose up --build
+```
+
+- Si la imagen ya esta construida solo ejecuta:
+```
+docker-compose up
+```
+- Si deseas ejecutar los contenedores en segundo plano:
+```
+docker-compose up -d
+```
+
+Accede a la aplicación a través de `http://localhost:3000` en tu navegador.
 
 Video de prueba: https://drive.google.com/file/d/1DVNsqbiaO0b4pcQYphhQwULf8BD3227q/view?usp=sharing 
 
