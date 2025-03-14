@@ -22,5 +22,5 @@ jobs:
           git status
           docker stop dataflow-app
           docker rm dataflow-app
-          docker build -t dataflow .
-          docker run -dit -p 5017:3000 --restart unless-stopped --name dataflow-app dataflow
+          docker build -t dataflow-image .
+          docker run -dit -p 5017:3000 --restart unless-stopped --name dataflow dataflow-image
