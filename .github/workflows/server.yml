@@ -20,7 +20,7 @@ jobs:
           cd /home/proyecto/Dataflow/
           git pull origin main
           git status
-          docker stop dataflow-app
-          docker rm dataflow-app
+          docker stop dataflow
+          docker rm dataflow
           docker build -t dataflow-image .
           docker run -dit -p 5017:3000 --restart unless-stopped --name dataflow dataflow-image
