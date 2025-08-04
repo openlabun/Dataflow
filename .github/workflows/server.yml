@@ -2,25 +2,25 @@ name: Deploy Server
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:       
-    - name: Deploy using ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        script: |
-          cd /home/proyecto/Dataflow/
-          git pull origin main
-          git status
-          docker stop dataflow
-          docker rm dataflow
-          docker build -t dataflow-image .
-          docker run -dit -p 5017:3000 --restart unless-stopped --name dataflow dataflow-image
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /home/proyecto/Dataflow/
+            git pull origin main
+            git status
+            docker build -t dataflow-image . 
+            docker stop dataflow
+            docker rm dataflow
+            docker run -dit -p 5017:3000 --restart unless-stopped --name dataflow dataflow-image
